@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+# 1. Configurando a fonte para o estilo acadêmico (Serif)
+plt.rcParams['font.family'] = 'serif'
+
 applications = ("Zip", "Core", "Sha", "Jpeg", "Linear", "Loops", "Nnet", "Parser", "Radix", "Ndp", 
-              "Euclidean Cluster", "Points2Image", "Ep", "Ft", "Sp", "Fio",
+              "Ec", "P2i", "Ep", "Ft", "Sp", "Fio",
                 "Cubic", "Isqrt", "Lsqrt", "Deg2rad", "Rad2ded", "Susan", "Geomean")
 
 performance_values = {
@@ -16,19 +19,51 @@ x = np.arange(len(applications))
 width = 0.20
 multiplier = 0
 
-fig, ax = plt.subplots(figsize=(8, 5), layout='constrained')
 
+fig, ax = plt.subplots(figsize=(20, 6), layout='constrained')
+
+ymax_limit = 2.0 
 
 for attribute, measurement in performance_values.items():
     offset = width * multiplier
     rects = ax.bar(x + offset, measurement, width, label=attribute)
-    #ax.bar_label(rects, padding=3)
+    
+    for rect in rects:
+        height = rect.get_height()
+        
+        if height > ymax_limit:
+            # 2. Configurando o texto extrapolado igual à imagem
+            ax.text(
+                rect.get_x() + rect.get_width() + 0.01,     
+                ymax_limit - 0.05,       # Posição Y levemente abaixo do teto
+                f'{height:.2f}',         
+                ha='left',               
+                va='top',                
+                fontsize=14,             
+                rotation=0,              # Texto na horizontal
+                color='black'
+            )
+            
     multiplier +=1
 
-ax.set_ylabel('Normalized Execution Time')
-ax.set_title('Execution Time')
-ax.set_xticks(x + width, applications, fontsize = 9, rotation = 90)
-ax.legend(loc='upper left', ncols=4)
-ax.set_ylim(0, 2)
 
-plt.savefig('graphic_performance.png')
+ax.axhline(y=1, color='black', linestyle='--', linewidth=2, label='Baseline')
+
+
+ax.set_ylabel('Normalized Execution Time', fontsize=16)
+ax.set_ylim(0, ymax_limit)
+ax.tick_params(axis='y', labelsize=14)
+
+
+ax.set_xticks(x + width * 1.5, applications, fontsize=14, rotation=45)
+
+
+ax.legend(
+    loc='upper center', 
+    bbox_to_anchor=(0.5, -0.15),
+    ncols=5,                   
+    fontsize=14, 
+    frameon=True
+)
+
+plt.savefig('graphic_performance_v2.png')
