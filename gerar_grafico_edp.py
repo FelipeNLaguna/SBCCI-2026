@@ -21,7 +21,7 @@ width = 0.17
 multiplier = 0
 
 
-fig, ax = plt.subplots(figsize=(20, 6), layout='constrained')
+fig, ax = plt.subplots(figsize=(14, 3), layout='constrained')
 ax.grid(axis='y')
 ax.set_axisbelow(True)
 
@@ -58,14 +58,14 @@ ax.set_ylim(0, ymax_limit)
 ax.tick_params(axis='y', labelsize=14)
 
 
-ax.set_xticks(x + width * 1.5, applications, fontsize=14, rotation=45)
+ax.set_xticks(x + width * 1.5, applications, fontsize=11, rotation=20)
 
 
 ax.legend(
     loc='upper center', 
     bbox_to_anchor=(0.5, -0.15),
     ncols=6,                   
-    fontsize=12, 
+    fontsize=8, 
     frameon=True
 )
 
